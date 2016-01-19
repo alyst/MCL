@@ -3,9 +3,7 @@ function(x, addLoops = TRUE, expansion = 2, inflation = 2, allow1 = FALSE, max.i
     if (addLoops) diag(x) <- 1.0
 
     # normalize the weights in adjacency matrix
-    adj.norm <- apply(x[,], MARGIN=2, FUN=function(Var){
-      Var/sum(Var)
-    })
+    adj.norm <- x %*% diag(1/colSums(x))
 
     # do MCL iterations
     a <- 1
@@ -14,11 +12,8 @@ function(x, addLoops = TRUE, expansion = 2, inflation = 2, allow1 = FALSE, max.i
       # expansion and inflation of the current adjacency matrix
       expans <- adj.norm %^% expansion
       infl <- expans ^ inflation
-
       # normalize the new adjacency matrix
-      infl.norm <- apply(infl[,], MARGIN=2, FUN=function(Var){
-        Var/sum(Var)
-      })
+      infl.norm <- infl %*% diag(1/colSums(infl))
 
       if(identical(infl.norm,adj.norm)) {
         ident <- TRUE
