@@ -70,14 +70,14 @@ function(x, addLoops = TRUE, expansion = 2, inflation = 2, allow1 = FALSE, max.i
       dimnames(infl.norm) <- list(1:nrow(infl.norm), 1:ncol(infl.norm))
 
       output <- list()
-      output[[1]] <- length(table(ClusterNummern))
-      output[[2]] <- a-1 
-      output[[3]] <- ClusterNummern
-      output[[4]] <- infl.norm
+      output$K <- length(table(ClusterNummern))
+      output$n.iterations <- a-1
+      output$Cluster <- ClusterNummern
 
-      names(output) <-c("K", "n.iterations","Cluster",
-                        "Equilibrium.state.matrix")
+      if (ESM) {
+        output$Equilibrium.state.matrix <- infl.norm
+      }
     }
     )
-  ifelse(ESM==TRUE,return(output),return(output[-4]))
+  return(output)
 }
