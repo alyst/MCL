@@ -32,24 +32,7 @@ function(x, addLoops = TRUE, expansion = 2, inflation = 2, allow1 = FALSE, max.i
     if(!is.na(infl.norm[1,1]) & ident){
 
       # remove rows containing only zero elements
-      count <- 0 
-      for(i in 1:ncol(infl.norm)){
-        if(sum(abs(infl.norm[i,])) != 0) {
-          count <- count+1
-        }
-      }
-
-      neu <- matrix(nrow=count, ncol=ncol(infl.norm)) 
-
-      zeile <- 1
-      for(i in 1:nrow(infl.norm)){
-        if(sum(infl.norm[i,]) != 0) {
-          for(j in 1:ncol(infl.norm)) {
-            neu[zeile,j]<-infl.norm[i,j]
-          }
-          zeile <- zeile+1
-        }
-      }
+      neu <- infl.norm[rowSums(abs(infl.norm)) > 0.0,]
 
       for(i in 1:nrow(neu)){
         for(j in 1:ncol(neu)) {
