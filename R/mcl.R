@@ -6,9 +6,8 @@ function(x, addLoops = TRUE, expansion = 2, inflation = 2, allow1 = FALSE, max.i
     adj.norm <- x %*% diag(1/colSums(x))
 
     # do MCL iterations
-    a <- 1
-    repeat{
-
+    ident <- FALSE
+    for (niter in 1:max.iter) {
       # expansion and inflation of the current adjacency matrix
       expans <- adj.norm %^% expansion
       infl <- expans ^ inflation
@@ -20,13 +19,7 @@ function(x, addLoops = TRUE, expansion = 2, inflation = 2, allow1 = FALSE, max.i
         break
       }
 
-      if(a==max.iter) {
-        ident <- FALSE
-        a <- a+1
-        break
-      }
       adj.norm <- infl.norm
-      a<- a+1
     }
 
     if(!is.na(infl.norm[1,1]) & ident){
@@ -58,7 +51,7 @@ function(x, addLoops = TRUE, expansion = 2, inflation = 2, allow1 = FALSE, max.i
       }
     }
 
-    ifelse(!(!is.na(infl.norm[1,1]) & ident), output <- paste("An Error occurred at iteration", a-1),
+    ifelse(!(!is.na(infl.norm[1,1]) & ident), output <- paste("An Error occurred at iteration", niter),
       {
       if(!allow1){
         # collapse all size 1 clusters into one with index 0
@@ -71,7 +64,7 @@ function(x, addLoops = TRUE, expansion = 2, inflation = 2, allow1 = FALSE, max.i
 
       output <- list()
       output$K <- length(table(ClusterNummern))
-      output$n.iterations <- a-1
+      output$n.iterations <- niter
       output$Cluster <- ClusterNummern
 
       if (ESM) {
