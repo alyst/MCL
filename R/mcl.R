@@ -63,9 +63,7 @@ function(x, addLoops = TRUE, expansion = 2, inflation = 2, allow1 = FALSE, max.i
       if(!allow1){
         # collapse all size 1 clusters into one with index 0
         dub <- duplicated(ClusterNummern) + duplicated(ClusterNummern,fromLast = T)
-        for(i in 1:length(dub)){
-          if(dub[[i]]==0) ClusterNummern[[i]]<-0
-        }
+        ClusterNummern[!dub] <- 0
       }
 
       #### dimnames for infl.norm
