@@ -7,8 +7,8 @@ Markov Cluster Algorithm
 \description{
 Perform the Markov Cluster Algorithm on an adjacency or (n x n) matrix.}
 \usage{
-mcl(x, addLoops = NULL, expansion = 2, inflation = 2, allow1 = FALSE, 
-       max.iter = 100, ESM = FALSE)
+mcl(x, addLoops = TRUE, expansion = 2, inflation = 2, allow1 = FALSE,
+       tol=1E-8, max.iter = 100, ESM = FALSE, verbose=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -30,8 +30,15 @@ logical; if \code{TRUE}, vertices are allowed to form their own cluster. If \cod
   \item{max.iter}{
  an interger, the maximum number of iterations for the MCL
 }
+  \item{tol}{
+ numeric, the method converges if the relative difference (in terms of Frobenius norm)
+ between the current matrix and the matrix on the previous iteration is below \code{tol} (default is \code{1E-8})
+}
   \item{ESM}{
- logical whether the equilibrium state matrix should be returned (default is \code{FALSE})
+ logical, whether the equilibrium state matrix should be returned (default is \code{FALSE})
+}
+  \item{verbose}{
+ logical, whether to output the diagnostic information during method execution (\code{FALSE} by default)
 }
 }
 \details{
