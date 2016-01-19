@@ -44,27 +44,15 @@ function(x, addLoops = TRUE, expansion = 2, inflation = 2, allow1 = FALSE, max.i
     # remove rows containing only zero elements
     neu <- infl.norm[rowSums(abs(infl.norm)) > 0.0,]
 
+    # assign cluster indexes to each node
+    ClusterNummern <- rep.int(-1, ncol(neu))
     for(i in 1:nrow(neu)){
       for(j in 1:ncol(neu)) {
-        if((neu[i,j] < 1) & (neu[i,j] > 0)){
-          neu[,j] <- 0
-          neu[i,j] <- 1
+        if(neu[i,j] > 0){
+          neu[,j] <- 0 # exclude the node from further cluster assignment
+          ClusterNummern[j] <- i
         }
       }
-    }
-
-    for(i in 1:nrow(neu)){
-      for (j in 1:ncol(neu)){
-        if(neu[i,j] != 0){
-          neu[i,j] <- i
-        }
-      }
-    }
-
-    # assign cluster indexes to each node
-    ClusterNummern <- sum(neu[,1])
-    for(j in 2:ncol(neu)){
-      ClusterNummern <- c(ClusterNummern,sum(neu[,j]))
     }
 
     if(!allow1){
