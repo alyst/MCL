@@ -22,55 +22,57 @@ function(x, addLoops = TRUE, expansion = 2, inflation = 2, allow1 = FALSE, max.i
       adj.norm <- infl.norm
     }
 
-    if(!is.na(infl.norm[1,1]) & ident){
+    output <- list()
+    if (is.na(infl.norm[1,1])) {
+      output$status <- paste0("Error: matrix norm is NA")
+    } else if (!ident) {
+      output$status <- paste0("Error: the algorithm did not converge")
+    } else {
+      # converged, prepare the results
+      output$status <- "OK"
+    }
 
-      # remove rows containing only zero elements
-      neu <- infl.norm[rowSums(abs(infl.norm)) > 0.0,]
+    #### dimnames for infl.norm
+    dimnames(infl.norm) <- list(1:nrow(infl.norm), 1:ncol(infl.norm))
 
-      for(i in 1:nrow(neu)){
-        for(j in 1:ncol(neu)) {
-          if((neu[i,j] < 1) & (neu[i,j] > 0)){
-            neu[,j] <- 0
-            neu[i,j] <- 1
-          }
+    # remove rows containing only zero elements
+    neu <- infl.norm[rowSums(abs(infl.norm)) > 0.0,]
+
+    for(i in 1:nrow(neu)){
+      for(j in 1:ncol(neu)) {
+        if((neu[i,j] < 1) & (neu[i,j] > 0)){
+          neu[,j] <- 0
+          neu[i,j] <- 1
         }
-      }
-
-      for(i in 1:nrow(neu)){
-        for (j in 1:ncol(neu)){
-          if(neu[i,j] != 0){
-            neu[i,j] <- i
-          }
-        }
-      }
-
-      # assign cluster indexes to each node
-      ClusterNummern <- sum(neu[,1])
-      for(j in 2:ncol(neu)){
-        ClusterNummern <- c(ClusterNummern,sum(neu[,j]))
       }
     }
 
-    ifelse(!(!is.na(infl.norm[1,1]) & ident), output <- paste("An Error occurred at iteration", niter),
-      {
-      if(!allow1){
-        # collapse all size 1 clusters into one with index 0
-        dub <- duplicated(ClusterNummern) + duplicated(ClusterNummern,fromLast = T)
-        ClusterNummern[!dub] <- 0
-      }
-
-      #### dimnames for infl.norm
-      dimnames(infl.norm) <- list(1:nrow(infl.norm), 1:ncol(infl.norm))
-
-      output <- list()
-      output$K <- length(table(ClusterNummern))
-      output$n.iterations <- niter
-      output$Cluster <- ClusterNummern
-
-      if (ESM) {
-        output$Equilibrium.state.matrix <- infl.norm
+    for(i in 1:nrow(neu)){
+      for (j in 1:ncol(neu)){
+        if(neu[i,j] != 0){
+          neu[i,j] <- i
+        }
       }
     }
-    )
-  return(output)
+
+    # assign cluster indexes to each node
+    ClusterNummern <- sum(neu[,1])
+    for(j in 2:ncol(neu)){
+      ClusterNummern <- c(ClusterNummern,sum(neu[,j]))
+    }
+
+    if(!allow1){
+      # collapse all size 1 clusters into one with index 0
+      dub <- duplicated(ClusterNummern) + duplicated(ClusterNummern,fromLast = T)
+      ClusterNummern[!dub] <- 0
+    }
+
+    output$K <- length(table(ClusterNummern))
+    output$n.iterations <- niter
+    output$Cluster <- ClusterNummern
+    if (ESM) {
+      output$Equilibrium.state.matrix <- infl.norm
+    }
+
+    return(output)
 }
