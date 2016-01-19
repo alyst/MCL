@@ -1,11 +1,6 @@
 mcl <-
-function(x, addLoops = NULL, expansion = 2, inflation = 2, allow1 = FALSE, max.iter = 100, ESM = FALSE ){
-
-    if(is.null(addLoops)){
-      stop("addLoops has to be TRUE or FALSE")
-    }
-
-    if (addLoops) diag(x) <- 1
+function(x, addLoops = TRUE, expansion = 2, inflation = 2, allow1 = FALSE, max.iter = 100, ESM = FALSE ){
+    if (addLoops) diag(x) <- 1.0
 
     # normalize the weights in adjacency matrix
     adj.norm <- apply(x[,], MARGIN=2, FUN=function(Var){
