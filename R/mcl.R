@@ -60,6 +60,8 @@ function(x, addLoops = TRUE, expansion = 2, inflation = 2, allow1 = FALSE, max.i
       dub <- duplicated(ClusterNummern) + duplicated(ClusterNummern,fromLast = T)
       ClusterNummern[!dub] <- 0
     }
+    # recode clusters numbers to be in 1:N range (or 0:N if there's collapsed cluster)
+    ClusterNummern <- match(ClusterNummern, sort(unique(ClusterNummern))) - ifelse(0 %in% ClusterNummern, 1, 0)
 
     output$K <- length(table(ClusterNummern))
     output$n.iterations <- niter
