@@ -1,6 +1,6 @@
 \name{mcl}
 \alias{mcl}
-\encoding{UTF-8} 
+\encoding{UTF-8}
 \title{
 Markov Cluster Algorithm
 }
