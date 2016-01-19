@@ -55,7 +55,8 @@ van Dongen, S.M. (2000) Graph Clustering by Flow Simulation. Ph.D. thesis, Unive
 Utrecht University Repository: http://dspace.library.uu.nl/handle/1874/848
 }
 \author{
-Martin L. Jäger
+Martin L. Jäger,
+Alexey Stukalov
 }
 \note{
 If an error occurs, \code{mcl} returns the number of the last iteration. If an error occurs at iteration 1, there might be a problem with the matrix \code{x}. If an error occurs at iteration \code{max.iter}, \code{x} could not be transformed into an equilibrium state matrix.

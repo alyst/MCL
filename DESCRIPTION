@@ -1,9 +1,10 @@
 Package: MCL
 Type: Package
 Title: Markov Cluster Algorithm
-Version: 1.0
-Date: 2015-03-11
-Author: Martin L. Jäger
+Version: 1.1
+Date: 2016-01-19
+Author: Martin L. Jäger,
+        Alexey Stukalov <stukalov@biochem.mpg.de>
 Maintainer: Ronja Foraita <foraita@bips.uni-bremen.de>
 Description: Contains the Markov cluster algorithm (MCL) for identifying clusters in networks and graphs. The algorithm simulates random walks on a (n x n) matrix as the adjacency matrix of a graph. It alternates an expansion step and an inflation step until an equilibrium state is reached.
 License: GPL (>= 2)
