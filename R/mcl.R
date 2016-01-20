@@ -58,6 +58,10 @@ function(x, addLoops = TRUE, expansion = 2, inflation = 2, allow1 = FALSE, max.i
     }
     # recode clusters numbers to be in 1:N range (or 0:N if there's collapsed cluster)
     ClusterNummern <- match(ClusterNummern, sort(unique(ClusterNummern))) - ifelse(0 %in% ClusterNummern, 1, 0)
+    # restore vertices names from adjacency matrix
+    if (!is.null(colnames(x))) {
+       names(ClusterNummern) <- colnames(x)
+    }
 
     output$K <- length(table(ClusterNummern))
     output$n.iterations <- niter
