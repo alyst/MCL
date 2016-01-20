@@ -35,6 +35,9 @@ function(x, addLoops = TRUE, expansion = 2, inflation = 2, allow1 = FALSE, max.i
       # converged, prepare the results
       output$status <- "OK"
     }
+    if (output$status != "OK") {
+      warning(output$status)
+    }
     output$relative.error <- rel_err
 
     #### dimnames for infl.norm
